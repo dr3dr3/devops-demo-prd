@@ -1,0 +1,34 @@
+# Continuous Deployment Workflow for Stage
+name: production-deploy
+run-name: Continuous deployment triggered by ${{ github.event_name }}
+
+on:
+  # Runs on pushes targeting the default branch
+  repository_dispatch:
+    types: [deploy]
+
+jobs:
+
+  # Build static site using Reveal-MD
+  build-prod:
+    name: Build PRD
+    if: ${{ !github.event.client_payload.paused }}
+    uses: dr3dr3/devops-via-preso/.github/workflows/reuse-build-revealmd.yml@main
+    with: 
+      target-ref: ${{ github.event.client_payload.target_ref }}
+      deploy-stage: 'prd'
+    secrets: inherit
+
+  # Deploy to GitHub Pages on the Stage Repo
+  deploy-to-github-pages:
+    name: Deploy GHP(PRD)
+    needs: build-prd
+    uses: dr3dr3/devops-via-preso/.github/workflows/reuse-deploy-github-pages.yml@main
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    with:
+      target-ref: ${{ github.event.client_payload.target_ref }}
+      deploy-stage: 'prd'
+    secrets: inherit

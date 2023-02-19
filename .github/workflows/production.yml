@@ -10,7 +10,7 @@ on:
 jobs:
 
   # Build static site using Reveal-MD
-  build-prod:
+  build-production:
     name: Build PRD
     if: ${{ !github.event.client_payload.paused }}
     uses: dr3dr3/devops-via-preso/.github/workflows/reuse-build-revealmd.yml@main
@@ -22,7 +22,7 @@ jobs:
   # Deploy to GitHub Pages on the Stage Repo
   deploy-to-github-pages:
     name: Deploy GHP(PRD)
-    needs: build-prd
+    needs: build-production
     uses: dr3dr3/devops-via-preso/.github/workflows/reuse-deploy-github-pages.yml@main
     permissions:
       contents: read

@@ -13,7 +13,7 @@ jobs:
   build-production:
     name: Build PRD
     if: ${{ !github.event.client_payload.paused }}
-    uses: dr3dr3/devops-demo/.github/workflows/reuse-build-revealmd.yml@main
+    uses: dr3dr3/ss-pipeline/.github/workflows/build-revealmd.yml@main
     with: 
       target-ref: ${{ github.event.client_payload.target_ref }}
       deploy-target: 'prd'
@@ -23,7 +23,7 @@ jobs:
   deploy-to-github-pages:
     name: Deploy GHP(PRD)
     needs: build-production
-    uses: dr3dr3/devops-demo/.github/workflows/reuse-deploy-github-pages.yml@main
+    uses: dr3dr3/ss-pipeline/.github/workflows/deploy-github-pages.yml@main
     permissions:
       contents: read
       pages: write

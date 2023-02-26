@@ -1,6 +1,6 @@
 # Continuous Deployment Workflow for Stage
-name: deploy-to-production
-run-name: Continuous deployment triggered by ${{ github.event_name }}
+name: DEPLOY-TO-PRODUCTION
+run-name: Continuous delivery triggered for Production Environment
 
 on:
   # Runs on pushes targeting the default branch

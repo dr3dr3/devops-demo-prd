@@ -6,11 +6,16 @@ on:
   repository_dispatch:
     types: [deploy]
 
+
+
 jobs: 
 
   # Continuous delivery workflow in 'ss-pipeline' repo
   continuous-delivery:
     name: CD
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: false    
     uses: dr3dr3/ss-pipeline/.github/workflows/continuous-delivery.yml@main
     with: 
       from-soln: ${{ github.event.client_payload.from_soln }}

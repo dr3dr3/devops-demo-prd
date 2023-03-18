@@ -1,4 +1,3 @@
-# Continuous Deployment Workflow for Stage
 name: DEPLOY-TO-PRODUCTION
 run-name: Continuous delivery triggered for Production Environment
 
@@ -14,10 +13,23 @@ jobs:
     name: CD
     uses: dr3dr3/ss-pipeline/.github/workflows/continuous-delivery.yml@main
     with: 
-      target-ref: 'main'
-      deploy-target: 'prd'
+      from-soln: ${{ github.event.client_payload.from_soln }}
+      target-ref: ${{ github.event.client_payload.target_ref }}
+      target-deploy: 'prd'
     permissions:
       contents: read
       pages: write
       id-token: write
+    secrets: inherit
+
+  ### No testing needed, as tested in Canary (and deloyment the same)
+
+  # Given successful testing then update the build for this environment in GitOps Config
+  build-config:
+    name: Update Build Config
+    needs: [continuous-delivery]
+    uses: dr3dr3/ss-pipeline/.github/workflows/gitops-update.yml@main
+    with:
+      config-item: '.deploy.revealmd.build.prd'
+      config-value: ${{ github.event.client_payload.target_ref }}
     secrets: inherit

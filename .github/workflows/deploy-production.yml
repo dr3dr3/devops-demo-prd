@@ -6,8 +6,6 @@ on:
   repository_dispatch:
     types: [deploy]
 
-
-
 jobs: 
 
   # Continuous delivery workflow in 'ss-pipeline' repo
@@ -18,23 +16,9 @@ jobs:
       cancel-in-progress: false    
     uses: dr3dr3/ss-pipeline/.github/workflows/continuous-delivery.yml@main
     with: 
-      from-soln: ${{ github.event.client_payload.from_soln }}
-      target-ref: ${{ github.event.client_payload.target_ref }}
       target-deploy: 'prd'
     permissions:
       contents: read
       pages: write
       id-token: write
-    secrets: inherit
-
-  ### No testing needed, as tested in Canary (and deloyment the same)
-
-  # Given successful testing then update the build for this environment in GitOps Config
-  build-config:
-    name: Update Build Config
-    needs: [continuous-delivery]
-    uses: dr3dr3/ss-pipeline/.github/workflows/gitops-update.yml@main
-    with:
-      config-item: '.deploy.revealmd.build.prd'
-      config-value: ${{ github.event.client_payload.target_ref }}
     secrets: inherit

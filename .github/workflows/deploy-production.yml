@@ -17,7 +17,7 @@ jobs:
     uses: dr3dr3/ss-pipeline/.github/workflows/continuous-delivery.yml@main
     with: 
       target-deploy: 'prd'
-      blue-green: 'blue'
+      blue-green: ${{ github.event.client_payload.blue-green }}
       site-url: ${{ github.event.client_payload.site-url }}
     permissions:
       contents: read

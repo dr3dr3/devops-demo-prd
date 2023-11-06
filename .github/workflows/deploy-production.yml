@@ -1,5 +1,5 @@
-name: DEPLOY-TO-PRODUCTION-GREEN
-run-name: Continuous delivery triggered for Production (Green) Environment
+name: DEPLOY-TO-PRODUCTION
+run-name: Continuous delivery triggered for Production environment
 
 on:
   # Runs on pushes targeting the default branch
@@ -16,7 +16,8 @@ jobs:
       cancel-in-progress: false    
     uses: dr3dr3/ss-pipeline/.github/workflows/continuous-delivery.yml@main
     with: 
-      target-deploy: 'blue'
+      target-deploy: 'prd'
+      blue-green: 'blue'
       site-url: ${{ github.event.client_payload.site-url }}
     permissions:
       contents: read
